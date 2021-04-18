@@ -12,14 +12,13 @@ services:
     image: mysql:latest
     volumes:
       - ./my.cnf:/etc/mysql/conf.d/my.cnf
-    ports:
-      - "3306:3306"
+      - ./logs:/var/log/mysql
     environment:
-      MYSQL_DATABASE: herring
+      MYSQL_DATABASE: hr
       MYSQL_USER: hr
       MYSQL_PASSWORD: hrhrhrhr
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      TZ: "Asia/Tokyo"
+      MYSQL_ROOT_PASSWORD: hrhrhrhr
+      TZ: 'Asia/Tokyo'
 
   php-my-admin:
     image: phpmyadmin/phpmyadmin
@@ -32,3 +31,6 @@ services:
       MYSQL_ROOT_PASSWORD: hrhrhrhr
       PMA_HOST: db
       PMA_PORT: 3306
+
+volumes:
+  db-store:

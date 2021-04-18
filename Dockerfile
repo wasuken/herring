@@ -1,7 +1,7 @@
 FROM centos:centos7
 
-RUN rm -f /etc/localtime \
-	&& cp -p /usr/share/zoneionfo/Japan /etc/localtime
+# RUN rm -f /etc/localtime \
+# 	&& cp -p /usr/share/zoneionfo/Japan /etc/localtime
 
 RUN yum -y update \
 	&& yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
@@ -11,6 +11,14 @@ RUN yum -y update \
 	&& yum remove php* \
 	&& yum -y install php php-{cli,fpm,mysqlnd,zip,devel,gd,mbstring,curl,xml,pear,bcmath,json} \
 	&& php --version
+
+RUN localedef -f UTF-8 -i ja_JP ja_JP.UTF-8 && \
+	ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+ENV LANG="ja_JP UTF-8" \
+    LANGUAGE="ja_JP:ja" \
+    LC_ALL="ja_JP.UTF-8" \
+    TZ="Asia/Tokyo"
 
 RUN yum install -y httpd httpd-devel \
 	&& rm -rf /var/cache/yum/* \
