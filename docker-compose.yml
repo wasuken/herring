@@ -1,0 +1,34 @@
+services:
+  app:
+    build: ./
+    volumes:
+      - ./app:/app
+    ports:
+      - "6060:80"
+    environment:
+      TZ: "Asia/Tokyo"
+
+  db:
+    image: mysql:latest
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: herring
+      MYSQL_USER: hr
+      MYSQL_PASSWORD: hrhrhrhr
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      TZ: "Asia/Tokyo"
+
+  php-my-admin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    ports:
+      - "6061:80"
+    environment:
+      MYSQL_USERNAME: hr
+      MYSQL_ROOT_PASSWORD: hrhrhrhr
+      PMA_HOST: db
+      PMA_PORT: 3306
